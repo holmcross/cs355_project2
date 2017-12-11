@@ -1,0 +1,47 @@
+<%- include("../includes/header.ejs", {title: title}); %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+<h1>Enter New Customer Info</h1>
+<br/>
+<br/>
+
+<form action="/insert" method="get">
+
+    Full Name: <input id="CustomerName" name="CustomerName" type="text" value=""/>
+    <br />
+    <br />
+    Email Address: <input id="EmailAddress" name="EmailAddress" type="text" value=""/>
+    <br />
+    <br />
+    Phone Number: <input id="PhoneNumber" name="PhoneNumber" type="text" value=""/>
+    <br />
+    <br />
+    Address Line 1: <input id="AddressLine1" name="AddressLine1" type="text" value=""/>
+    <br />
+    <br />
+    Address Line 2: <input id="AddressLine2" name="AddressLine2" type="text" value=""/>
+    <br />
+    <br />
+    City: <input id="City" name="City" type="text" value=""/>
+    <br />
+    <br />
+    State: <input id="State" name="State" type="text" value=""/>
+    <br />
+    <br />
+    Zip Code: <input id="Zip" name="Zip" type="text" value=""/>
+    <br />
+    <br />
+
+    <input type="submit" />
+
+</form>
+
+</body>
+</html>
+<%- include("../includes/footer.ejs"); %>
