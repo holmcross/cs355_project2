@@ -1,0 +1,19 @@
+<%- include("../includes/header.ejs", {Order Search}); %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+
+<h1>Find Orders for a Specific Customer</h1>
+<form action="/orders/getOrdersByCustomerId" method="get">
+    Customer Id <input id="CustomerId" name="CustomerId" type="number" />
+    <input type="submit" />
+</form>
+
+
+</body>
+</html>
+<%- include("../includes/footer.ejs"); %>

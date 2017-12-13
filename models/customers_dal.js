@@ -25,34 +25,32 @@ exports.getById = function(CustomerId, callback) {
 
 exports.insert = function(params, callback) {
 
-    // FIRST INSERT THE COMPANY
-    var query = 'INSERT INTO company (company_name) VALUES (?)';
+    var query = 'INSERT INTO addresses (AddressLine1, AddressLine2, City, State, Zip) VALUES (?)';
+    var addressData = [params.AddressLine1, params.AddressLine2, params.City, params.State, params.Zip];
 
-    var queryData = [params.company_name];
+    connection.query(query, [addressData], function(err, result) {
 
-    connection.query(query, queryData, function(err, result) {
+        var InsertedAddressId = result.insertId;
 
-        // THEN USE THE COMPANY_ID RETURNED AS insertId AND THE SELECTED ADDRESS_IDs INTO COMPANY_ADDRESS
-        var company_id = result.insertId;
+        var query = 'INSERT INTO customers (CustomerName, EmailAddress, PhoneNumber, MailingAddress) VALUES (?)';
+        var customerData = [params.CustomerName, params.EmailAddress, params.PhoneNumber, InsertedAddressId];
 
-        // NOTE THAT THERE IS ONLY ONE QUESTION MARK IN VALUES ?
-        var query = 'INSERT INTO company_address (company_id, address_id) VALUES ?';
-
-        // TO BULK INSERT RECORDS WE CREATE A MULTIDIMENSIONAL ARRAY OF THE VALUES
-        var companyAddressData = [];
-        if (params.address_id.constructor === Array) {
-            for (var i = 0; i < params.address_id.length; i++) {
-                companyAddressData.push([company_id, params.address_id[i]]);
-            }
-        }
-        else {
-            companyAddressData.push([company_id, params.address_id]);
-        }
-
-        // NOTE THE EXTRA [] AROUND companyAddressData
-        connection.query(query, [companyAddressData], function(err, result){
+        connection.query(query, [customerData], function(err, result) {
             callback(err, result);
         });
     });
 
 };
+
+/*
+//This may not work: it requires taking the value from a submitted form and passing it to a mySQL function which
+//Then checks it's existence in a table. Getting a "BAD_FIELD_ERROR: Unknown column 'EmailAddress' in field list
+//My guess is the data types do not match up - javascript would have to force text into a varchar
+
+exports.checkEmail = function(EmailAddress, callback) {
+    var query = 'SELECT checkExistenceOfEmail( EmailAddress );';
+    connection.query(query, function(err, result) {
+        callback(err, result);
+    });
+};
+*/

@@ -1,0 +1,11 @@
+<%- include("../includes/header.ejs") %>
+
+<h1>Submit Customer Id</h1>
+<form action="/orders/checkOrdersById" method="get" >
+
+    <input id="CustomerId" name="CustomerId" type="number"/>
+    <br/>
+    <input type="submit" />
+</form>
+
+<%- include("../includes/footer.ejs"); %>

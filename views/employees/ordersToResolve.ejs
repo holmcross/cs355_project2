@@ -1,0 +1,57 @@
+<%- include("../includes/header.ejs", {title:"Orders to Resolve"}); %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #orders {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #orders td, #albums th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #orders tr:nth-child(even){background-color: #f2f2f2;}
+
+        #orders tr:hover {background-color: #ddd;}
+
+        #orders th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h1>...and make it servile</h1>
+
+<table id="orders">
+<tr>
+    <th>Related Order Id</th>
+    <th>Status</th>
+    <th>The Sucker's Name</th>
+    <th>Description of Order</th>
+    <th>Sucker's Email Address</th>
+</tr>
+<% for (var i = 0; i < result.length; i++) { %>
+<tr>
+    <td> <%= result[i].Order_Number %> </td>
+    <td> <%= result[i].Status %> </td>
+    <td> <%= result[i].CustomerName %> </td>
+    <td> <%= result[i].Description %> </td>
+    <td> <%= result[i].EmailAddress %> </td>
+</tr>
+<% } %>
+</table>
+
+</body>
+</html>
+
+<%- include("../includes/footer.ejs"); %>

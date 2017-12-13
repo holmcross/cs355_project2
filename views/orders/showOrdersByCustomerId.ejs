@@ -1,0 +1,52 @@
+<%- include("../includes/header.ejs"); %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #orders {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #orders td, #albums th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #orders tr:nth-child(even){background-color: #f2f2f2;}
+
+        #orders tr:hover {background-color: #ddd;}
+
+        #orders th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+    </style>
+</head>
+<body>
+
+<h1>Show Orders For A Given Customer</h1>
+
+<table id="orders">
+    <tr>
+        <th>Album Name</th>
+        <th>Price (USD)</th>
+        <th>Number Ordered</th>
+    </tr>
+    <% for (var i = 0; i < result.length; i++) { %>
+    <tr>
+        <td> <%= result[i].AlbumName %> </td>
+        <td> <%= result[i].UnitPrice %> </td>
+        <td> <%= result[i].QuantityOrdered %> </td>
+    </tr>
+    <% } %>
+</table>
+
+</body>
+</html>
+
+<%- include("../includes/footer.ejs"); %>
