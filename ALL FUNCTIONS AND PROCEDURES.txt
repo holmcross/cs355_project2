@@ -1,0 +1,42 @@
+use elevalley;
+
+DROP PROCEDURE IF EXISTS getOrderInfoByCustomerId;
+DELIMITER //
+CREATE PROCEDURE getOrderInfoByCustomerId(_customerId INT)
+BEGIN
+
+	SELECT o.OrderId, a.AlbumName, a.UnitPrice, ao.QuantityOrdered, o.Status FROM orders o
+	LEFT JOIN album_orders ao ON o.OrderId = ao.OrderId
+	LEFT JOIN albums a ON ao.AlbumId = a.AlbumId
+	WHERE CustomerId = _customerId;
+
+END//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS getOrderInfoByOrderId;
+DELIMITER //
+CREATE PROCEDURE getOrderInfoByOrderId(_orderId INT)
+BEGIN
+	SELECT a.AlbumName, ao.QuantityOrdered, a.UnitPrice FROM orders o
+    LEFT JOIN album_orders ao ON o.OrderId = ao.OrderId
+    LEFT JOIN albums a ON ao.AlbumId = a.AlbumId
+    WHERE o.OrderId = _orderId;
+
+END//
+DELIMITER ;
+
+
+##For checking to see if there is already a record
+DROP FUNCTION IF EXISTS checkExistenceOfEmail;
+DELIMITER //
+CREATE FUNCTION checkExistenceOfEmail(_Email VARCHAR(50) ) RETURNS INT
+BEGIN
+
+DECLARE _result INT;
+SELECT COUNT(*) INTO _result FROM customers c
+WHERE c.EmailAddress = _Email;
+
+RETURN _result;
+
+END//
+DELIMITER ;

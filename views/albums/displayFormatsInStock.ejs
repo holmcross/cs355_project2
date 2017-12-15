@@ -1,25 +1,26 @@
-<%- include("../includes/header.ejs"); %>
+<%- include("../includes/header.ejs", {title:"title"}); %>
 
 <!DOCTYPE html>
 <html>
 <head>
+    <title>What Formats We Got.</title>
     <style>
-        #orders {
+        #albums {
             font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
             border-collapse: collapse;
             width: 100%;
         }
 
-        #orders td, #albums th {
+        #albums td, #albums th {
             border: 1px solid #ddd;
             padding: 8px;
         }
 
-        #orders tr:nth-child(even){background-color: #f2f2f2;}
+        #albums tr:nth-child(even){background-color: #f2f2f2;}
 
-        #orders tr:hover {background-color: #ddd;}
+        #albums tr:hover {background-color: #ddd;}
 
-        #orders th {
+        #albums th {
             padding-top: 12px;
             padding-bottom: 12px;
             text-align: left;
@@ -29,24 +30,20 @@
 </head>
 <body>
 
-<h1>Show Orders For A Given Customer</h1>
-
-<table id="orders">
+<table id="albums">
     <tr>
-        <th>Album Name</th>
-        <th>Price (USD)</th>
-        <th>Number Ordered</th>
+        <th>Format</th>
+        <th>Total in Stock</th>
     </tr>
     <% for (var i = 0; i < result.length; i++) { %>
     <tr>
-        <td> <%= result[i].AlbumName %> </td>
-        <td> <%= result[i].UnitPrice %> </td>
-        <td> <%= result[i].QuantityOrdered %> </td>
+        <td> <%= result[i].Format%> </td>
+        <td> <%= result[i].Total_In_Stock%></td>
     </tr>
     <% } %>
 </table>
 <br/>
-<a href="/">Return to main menu</a>
+<a href="/employees">Back to the grunt's index</a>
 
 </body>
 </html>

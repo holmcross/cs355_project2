@@ -1,0 +1,25 @@
+<%- include("../includes/header.ejs", {title:"title"}); %>
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h1>New Custom Order Form</h1>
+<form action="/orders/insertCustomOrder"
+<br/>
+<br/>
+Please enter your request: <input type="text" name="Description">
+<br/>
+Please Enter Your Email Address<select id="customerId" name="customerId">
+    <% for(var i=0; allCustomers.length > i; i++ ) { %>
+    <option value="<%= allCustomers[i].CustomerId %>"><%=allCustomers[i].EmailAddress%></option>
+    <% } %>
+</select>
+<input type="submit"/>
+</form>
+
+</body>
+</html>
+
+<%- include("../includes/footer.ejs"); %>

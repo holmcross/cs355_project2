@@ -15,4 +15,16 @@ router.get('/catalog', function (req, res, next) {
 
 });
 
+router.get('/checkFormatsInStock', function(req, res, next) {
+    albums_dal.checkFormatsInStock(function(err, result){
+        if(err) {
+            res.send(err);
+        }
+        else {
+            res.render('albums/displayFormatsInStock', { 'result':result });
+        }
+    });
+
+});
+
 module.exports = router;

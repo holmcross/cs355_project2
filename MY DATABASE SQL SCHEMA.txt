@@ -1,0 +1,146 @@
+USE elevalley;
+
+## REQUIRED TO REVERT DATABASE FROM PROJECT 1
+DROP TABLE IF EXISTS customOrders;
+DROP TABLE IF EXISTS band_musicians;
+DROP TABLE IF EXISTS musicians;
+DROP TABLE IF EXISTS instruments;
+DROP TABLE IF EXISTS album_orders;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS customer_paymentInfo;
+DROP TABLE IF EXISTS paymentInfo;
+DROP TABLE IF EXISTS tracks;
+DROP TABLE IF EXISTS albums;
+DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS bands;
+
+CREATE TABLE addresses (
+	AddressId INT AUTO_INCREMENT PRIMARY KEY,
+    AddressLine1 VARCHAR(50) NOT NULL,
+    AddressLine2 VARCHAR(50),
+    City VARCHAR(25),
+    State VARCHAR(25),
+    Zip INT NOT NULL
+);
+
+INSERT INTO addresses (AddressLine1, AddressLine2, City, State, Zip)
+VALUES
+	('414 Mammoth', 'Suite 422', 'Longmont', 'CO', 26637),
+    ('322 Triangle Dr.', 'Apt. 2', 'Longmont', 'CO', 26637),
+    ('882 Left st.', NULL, 'Siracruz', 'NY', 76382),
+    ('10 Fake st.', 'Suite B', 'Springfield', 'MA', 10222),
+    ('662 Gugliatta', NULL, 'Santa Rosa', 'CA', 95409),
+    ('77 Aufbhen road', NULL, 'Jonestown', 'NC', 98767),
+    ('54 Brianstown', NULL, 'Eurkea', 'CA', 73621),
+    ('1 Internet Way', 'Domain A', 'Cybersphere', 'YU', 10001),
+    ('62 Sparkle Dr', NULL, 'Middlesex', 'WY', 38288),
+    ('91 Garrett Dr.', 'Apt. C', 'Rohnert Park', 'CA', 94928);
+
+CREATE TABLE customers (
+	CustomerId INT AUTO_INCREMENT PRIMARY KEY,
+    CustomerName VARCHAR(50) NOT NULL,
+	EmailAddress  VARCHAR(50) UNIQUE NOT NULL,
+	PhoneNumber VARCHAR(50),
+    MailingAddress INT,
+    FOREIGN KEY (MailingAddress) REFERENCES addresses(AddressId)
+);
+
+INSERT INTO customers (CustomerName, EmailAddress, PhoneNumber, MailingAddress)
+VALUES
+	('Rick Slick', 'Rick@Lipsmackers.com', '707-332-1190', 10),
+    ('Gioninni', 'Gioninni@IsotonerGloves.com', '123-456-7890', 2),
+    ('Delmo', 'Delmo@Bathroom.com', '555-555-5555', 6),
+    ('Eric Le Carde', 'Eric@treecutters.com', '432-333-1111', 3),
+    ('Justin Timberlake', 'Justin@Fingerhut.com', '663-111-0000', 4),
+    ('JC Denton', 'JC@daedelus.unatco.gov', '111-555-9999', 9),
+    ('Elspeth Tireal', 'Elspeth@underworld.net', '666-666-0000', 8),
+    ('Kool Keith', 'Octagon@hotmail.com', '636-009-2933', 7);
+
+CREATE TABLE albums (
+	AlbumId INT AUTO_INCREMENT PRIMARY KEY,
+    AlbumName VARCHAR(50) NOT NULL,
+    Format VARCHAR(50) NOT NULL,
+    UnitPrice FLOAT NOT NULL,
+    NumberInStock INT NOT NULL
+);
+
+INSERT INTO albums (AlbumName, Format, UnitPrice, NumberInStock)
+VALUES
+	('Ride the Lightning', 'CD', 15.99, 13),
+    ('Master of Puppets', 'CD', 21.99, 15),
+    ('Rust in Peace', 'Vinyl', 9.99, 0),
+    ('Master of Reality', 'Casette', 21.99, 8),
+    ('Dopesmoker', 'Casette', 8.99, 4),
+    ('Closer', 'CD', 9.99, 0),
+    ('Houses of the Holy', 'Vinyl', 7.99, 7),
+    ('Houses of the Holy', '8-track', 7.99, 0),
+    ('Amnesiac', 'MP3', 9.99, 0);
+
+
+    CREATE TABLE orders(
+	OrderId INT AUTO_INCREMENT PRIMARY KEY,
+	Status VARCHAR(25) NOT NULL DEFAULT 'Awaiting Payment', ##used to be Open
+    Description VARCHAR(200) DEFAULT 'Album Order',
+    CustomerId INT,
+    FOREIGN KEY (CustomerId) REFERENCES customers(CustomerId)
+);
+
+INSERT INTO orders (Status, CustomerId)
+VALUES
+	('Closed',1),
+    ('Awaiting Payment', 2),
+    ('Awaiting Shipment', 3),
+    ('Awaiting Payment', 4),
+    ('Awaiting Payment', 5),
+    ('Closed', 6),
+    ('Awaiting Payment', 6),
+    ('Awaiting Payment', 6);
+
+    CREATE TABLE album_orders (
+	TotalCost FLOAT NOT NULL DEFAULT 19.99,
+    QuantityOrdered INT NOT NULL,
+    AlbumId INT,
+    OrderId INT,
+    PRIMARY KEY (AlbumId, OrderId),
+    FOREIGN KEY (AlbumId) REFERENCES albums(AlbumId),
+    FOREIGN KEY (OrderId) REFERENCES orders(OrderId)
+);
+
+INSERT INTO album_orders (TotalCost, QuantityOrdered, AlbumId, OrderId)
+VALUES
+	(15.99, 1, 1, 1), #customer 1
+    (15.99, 1, 1, 2), #customer 2
+    (21.99, 1, 2, 2), #customer 2
+    (26.97, 3, 5, 3), #customer 3
+    (43.98, 2, 2, 4), #customer 4
+    (7.99, 1, 7, 4), #customer 4
+    (9.99, 1, 6, 4), #customer 4
+    (15.98, 2, 7, 5),  #customer 5
+    (21.99, 1, 4, 6), #customer 6
+    (9.99, 1, 6, 7), #customer 6
+    (21.99, 1, 4, 8); # customer 6
+
+    CREATE TABLE customOrders (
+	OrderId INT AUTO_INCREMENT PRIMARY KEY,
+	Description VARCHAR(250),
+    Status VARCHAR(25) DEFAULT 'Open',
+    CustomerId INT,
+    FOREIGN KEY (CustomerId) REFERENCES customers(CustomerId)
+);
+
+INSERT INTO customOrders (Description, CustomerId)
+VALUES
+	('Deerhoof released a live recording called Juans Basement in 2003 on CD.', 5),
+    ('Come My Fanatics ... by Electric Wizard.', 1);
+
+DROP VIEW IF EXISTS elevalley.customersToContact;
+CREATE VIEW elevalley.customersToContact
+AS
+SELECT o.OrderId AS Order_Number, c.CustomerName, o.Description, o.Status, c.EmailAddress FROM orders o
+LEFT JOIN customers c ON c.CustomerId = o.CustomerId
+WHERE o.Status != 'closed'
+UNION
+SELECT cO.OrderId AS Order_Number, c.CustomerName, cO.Description, cO.Status, c.EmailAddress FROM customOrders cO
+LEFT JOIN customers c ON c.CustomerId = cO.CustomerId
+WHERE cO.Status != 'closed';

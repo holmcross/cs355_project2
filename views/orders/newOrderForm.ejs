@@ -7,7 +7,22 @@
 <body>
 
 <h1>New order form</h1>
-<form action=
+<form action="/orders/addQuantityToOrder" method="get">
+    <br/>
+    Select Album(s) you'd like to order: <select id="AlbumId" name="AlbumId" multiple="multiple">
+        <% for(var i=0; result.length > i; i++ ) { %>
+        <option value="<%= result[i].AlbumId %>"><%= result[i].AlbumName + ', $' + result[i].UnitPrice %></option>
+        <% } %>
+    </select>
+    <br/>
+    <br/>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#AlbumId').multiselect();
+        });
+    </script>
+    <input type="submit"  />
+</form>
 
 </body>
 </html>

@@ -1,11 +1,16 @@
 <%- include("../includes/header.ejs") %>
 
-<h1>Submit Customer Id</h1>
-<form action="/orders/checkOrdersById" method="get" >
+<h1>Select your email to see your orders:</h1>
+<form action="/orders/displayOrdersByCustomerId" method="get" >
 
-    <input id="CustomerId" name="CustomerId" type="number"/>
+   Your Email Address: <select id="customerId" name="customerId">
+        <% for(var i=0; allCustomers.length > i; i++ ) { %>
+        <option value="<%= allCustomers[i].CustomerId %>"><%=allCustomers[i].EmailAddress%></option>
+        <% } %>
+    </select>
     <br/>
     <input type="submit" />
+
 </form>
 
 <%- include("../includes/footer.ejs"); %>

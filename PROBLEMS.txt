@@ -1,6 +1,0 @@
-1.
-
-
-Routing errors - something is doubling up the URL requests
-
-UPDATE AND RELATIONAL SCHEMAS AND REPLACE IMAGES WITH NEW ONES IN PUBLIC FOLDER

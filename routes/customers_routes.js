@@ -7,28 +7,13 @@ router.get('/add', function (req, res, next) {
 });
 
 router.get('/checkOrdersByCustomerId', function (req, res, next) {
-    res.render('customers/customersLookupOrderById', {title: 'Lookup by Customer Id'});
-});
-
-router.get('/getOrdersByCutomerId', function (req, res) {
-
+    customers_dal.getAll(function (err, result){
+        res.render('customers/customersLookupOrderById', {title: 'Lookup by Customer Id', allCustomers: result});
+    })
 });
 
 router.get('/insert', function(req, res){
-/* NON FUNCTIONAL AT THE MOMENT
 
-    customers_dal.checkEmail(req.query.EmailAddress, function(err,result) {
-        if (err) {
-            console.log(err)
-            res.send(err);
-        }
-        else {
-            if(result != 0){
-                res.send('Account already exists for that email address');
-            }
-        }
-        });
-*/
 
     if(req.query.CustomerName == "") {
         res.send('A name must be provided.');

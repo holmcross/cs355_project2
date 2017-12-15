@@ -35,18 +35,22 @@
 <table id="albums">
     <tr>
         <th>Album Name</th>
+        <th>Format</th>
         <th>Price (USD)</th>
         <th>Number In Stock</th>
     </tr>
     <% for (var i = 0; i < result.length; i++) { %>
     <tr>
         <td> <%= result[i].AlbumName %> </td>
+        <td> <%= result[i].Format %></td>
         <td> <%= result[i].UnitPrice %> </td>
         <td> <%= result[i].NumberInStock %> </td>
     </tr>
     <% } %>
 </table>
 
+<br/>
+<a href="/">Return to Index</a>
 
 </body>
 </html>

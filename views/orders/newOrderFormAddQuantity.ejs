@@ -1,0 +1,33 @@
+<%- include("../includes/header.ejs", {title:"title"}); %>
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+<form action ="/orders/insert" method="get">
+    <br/>
+    <h1>Specify quantity and choose customer ID</h1>
+
+    <%for(var i = 0; allAlbumsArray.length > i; i++) { %>
+        Enter Quantity for <%= allAlbumsArray[i][1] %>:
+        <input type="hidden" name="albumId" value="<%=allAlbumsArray[i][0]%>">
+        <input type="number" name="quantity" min="1">
+        <br/>
+        <br/>
+    <%}%>
+    <br/>
+    <select id="customerId" name="customerId">
+        <% for(var i=0; allCustomers.length > i; i++ ) { %>
+        <option value="<%= allCustomers[i].CustomerId %>"><%=allCustomers[i].EmailAddress%></option>
+        <% } %>
+    </select>
+
+    <input type="submit" />
+</form>
+
+</body>
+</html>
+
+<%- include("../includes/footer.ejs"); %>
